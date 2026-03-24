@@ -17,7 +17,7 @@ export class DatabaseConfig {
             }
 
             DatabaseConfig.instance = await open({
-                filename: path.join(__dirname, '../../database.sqlite'),
+                filename: process.env.DB_PATH || path.join(__dirname, '../../database.sqlite'),
                 driver: sqlite3.Database
             });
 

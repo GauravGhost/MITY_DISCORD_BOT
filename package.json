@@ -4,7 +4,7 @@
   "description": "",
   "main": "dist/server.js",
   "scripts": {
-    "start": "node dist/deploy-commands.js && cross-env NODE_ENV=production node dist/server.js",
+    "start": "node dist/deploy-commands.js && node dist/server.js",
     "build": "tsc",
     "dev": "cross-env NODE_ENV=development ts-node src/server.ts",
     "deploy": "ts-node src/deploy-commands.ts",
