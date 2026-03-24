@@ -31,7 +31,8 @@ const pingCommand: Command = {
             await userRepo.create(user);
         }
 
-        await interaction.editReply(`Pong! You have pinged me ${user.ping_count} times!`);
+        await interaction.editReply(`Pong!`);
+        await interaction.followUp({ content: `Pong! You have pinged me ${user.ping_count} times!`, ephemeral: true });
     },
 };
 
