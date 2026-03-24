@@ -1,17 +1,18 @@
 # Use an official Node runtime as a build environment
 FROM node:20-alpine AS builder
 
+# Install git for cloning
+RUN apk add --no-cache git
+
 # Set the working directory
 WORKDIR /app
 
-# Copy package configurations
-COPY package*.json ./
+# Clone the repository (you can pass --build-arg CACHEBUST=$(date +%s) to force a fresh clone)
+ARG CACHEBUST=1
+RUN git clone https://github.com/GauravGhost/MITY_DISCORD_BOT.git .
 
 # Install all dependencies (including devDependencies for TypeScript)
 RUN npm ci
-
-# Copy the rest of the application code
-COPY . .
 
 # Build the TypeScript code
 RUN npm run build
@@ -22,8 +23,8 @@ FROM node:20-alpine
 # Set the working directory
 WORKDIR /app
 
-# Copy package configurations
-COPY package*.json ./
+# Copy package configurations from the builder stage
+COPY --from=builder /app/package*.json ./
 
 # Install only production dependencies
 RUN npm ci --omit=dev
@@ -35,4 +36,4 @@ COPY --from=builder /app/dist ./dist
 ENV NODE_ENV=production
 
 # Start the bot directly
-CMD ["node", "dist/server.js"]
+CMD ["npm", "start"]
